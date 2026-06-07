@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Siva ❤️ Kavi — A cinematic love story. Our forever, our memories, our world." />
+  <meta name="theme-color" content="#060010" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Siva ❤️ Kavi — Our Forever</title>
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Premium font stack -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;600;700&family=Raleway:wght@200;300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       BACKGROUND AUDIO (hidden, looping)
+  ════════════════════════════════════════ -->
+  <audio id="bg-music" loop preload="none" aria-hidden="true">
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- ═══════════════════════════════════════
+       CUSTOM CURSOR (desktop only)
+  ════════════════════════════════════════ -->
+  <div id="cursor-dot"   aria-hidden="true"></div>
+  <div id="cursor-ring"  aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════
+       THREE.JS BACKGROUND CANVAS
+  ════════════════════════════════════════ -->
+  <canvas id="three-canvas" aria-hidden="true"></canvas>
+
+  <!-- ═══════════════════════════════════════
+       GLOBAL FLOATING LAYERS
+  ════════════════════════════════════════ -->
+  <canvas id="effects-canvas" class="effects-canvas" aria-hidden="true"></canvas>
+  <div id="floating-hearts-layer" class="floating-hearts-layer" aria-hidden="true"></div>
+  <div id="floating-roses-layer" class="floating-roses-layer" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════
+       LANDING SCENE
+  ════════════════════════════════════════ -->
+  <section id="landing" class="landing-scene" role="region" aria-label="Welcome screen">
+    <div class="landing-stars" aria-hidden="true"></div>
+    <div class="landing-content">
+      <p class="landing-eyebrow" aria-hidden="true">A story of two hearts</p>
+      <h1 class="landing-title" id="title-ourstory">Siva ❤️ Kavi</h1>
+      <h2 class="landing-sub"   id="title-forever">Our Forever</h2>
+      <p class="landing-date">Since the day our hearts met ✨</p>
+      <button class="enter-btn magnetic-btn" id="enter-btn" aria-label="Enter our love story world">
+        <span class="btn-shimmer" aria-hidden="true"></span>
+        <span class="btn-glow"    aria-hidden="true"></span>
+        <span class="btn-text">Enter Our World ❤️</span>
+      </button>
+    </div>
+    <!-- Decorative floating orbs -->
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+    <div class="orb orb-3" aria-hidden="true"></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       MEMORY TUNNEL (transition overlay)
+  ════════════════════════════════════════ -->
+  <div id="tunnel-overlay" class="tunnel-overlay hidden" role="status" aria-live="polite" aria-label="Entering your memories">
+    <canvas id="tunnel-canvas" aria-hidden="true"></canvas>
+    <div class="tunnel-text" aria-hidden="true">
+      <span class="tunnel-word">Entering</span>
+      <span class="tunnel-word">your</span>
+      <span class="tunnel-word">memories…</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       MAIN WORLD (revealed after Enter)
+  ════════════════════════════════════════ -->
+  <div id="main-world" class="main-world hidden">
+
+    <!-- NAVIGATION -->
+    <nav class="love-nav" role="navigation" aria-label="Main navigation">
+      <div class="nav-logo" aria-label="Siva and Kavi">
+        <span class="nav-logo-text">Siva</span>
+        <span class="nav-logo-heart">❤️</span>
+        <span class="nav-logo-text">Kavi</span>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-menu" role="menubar">
+        <a href="#section-meeting"   role="menuitem" class="nav-link">First Meeting</a>
+        <a href="#section-gallery"   role="menuitem" class="nav-link">Gallery</a>
+        <a href="#section-timeline"  role="menuitem" class="nav-link">Journey</a>
+        <a href="#section-promises"  role="menuitem" class="nav-link">Promises</a>
+        <a href="#section-future"    role="menuitem" class="nav-link">Our Future</a>
+      </div>
+    </nav>
+
+    <!-- ──────────────────────────────────
+         SECTION 1 — OUR FIRST MEETING
+    ─────────────────────────────────── -->
+    <section id="section-meeting" class="story-section meeting-section" role="region" aria-label="Our first meeting">
+      <canvas id="sky-canvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="glass-container float-in">
+        <div class="section-label" aria-hidden="true">Chapter I</div>
+        <h2 class="section-title">Our First Meeting</h2>
+        <div class="section-body">
+          <div class="crystal-frame" data-photo="photo1" role="button" aria-label="Photo from our first meeting" tabindex="0">
+            <div class="crystal-inner">
+              <div class="img-shimmer"></div>
+              <img src="src/1.jpg.jpeg" alt="Our first meeting — a moment that changed everything" class="lazy-image" loading="lazy" />
+              <div class="crystal-shine"  aria-hidden="true"></div>
+              <div class="crystal-label"  aria-hidden="true">First Meeting</div>
+            </div>
+            <div class="crystal-reflection" aria-hidden="true"></div>
+            <div class="crystal-shadow"     aria-hidden="true"></div>
+          </div>
+          <div class="memory-text glass-card">
+            <div class="memory-quote-wrap">
+              <div class="quote-mark left" aria-hidden="true">"</div>
+              <p class="memory-quote">The moment I saw you, time forgot how to move.</p>
+              <div class="quote-mark right" aria-hidden="true">"</div>
+            </div>
+            <p class="memory-body">Every love story begins with a single moment — a glance, a smile, a heartbeat that changed everything. This was ours. I didn't know it then, but the universe had been building to that exact second.</p>
+            <div class="memory-tags">
+              <span class="tag">First Smile</span>
+              <span class="tag">Changed Everything</span>
+              <span class="tag">Forever</span>
+            </div>
+          </div>
+        </div>
+        <div class="heart-divider" aria-hidden="true">
+          <span class="h-heart">❤</span>
+          <span class="h-line"></span>
+          <span class="h-heart">❤</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────
+         SECTION 2 — BEAUTIFUL DAYS (Gallery)
+    ─────────────────────────────────── -->
+    <section id="section-gallery" class="story-section gallery-section" role="region" aria-label="Photo gallery — our beautiful days">
+      <div class="section-label" aria-hidden="true">Chapter II</div>
+      <h2 class="section-title glow-title">Our Beautiful Days</h2>
+      <p class="section-subtitle">Every day with you is a memory I never want to forget</p>
+
+      <div class="gallery-grid" id="gallery-grid" role="list" aria-label="Gallery of our memories">
+        <!-- Gallery items injected by JS -->
+      </div>
+
+      <!-- Photo Popup / Lightbox -->
+      <div id="photo-popup" class="photo-popup hidden" role="dialog" aria-modal="true" aria-label="Photo viewer" tabindex="-1">
+        <div class="popup-backdrop" id="popup-backdrop"></div>
+        <div class="popup-content glass-card">
+          <button class="popup-close" id="popup-close" aria-label="Close photo viewer">✕</button>
+          <div class="popup-img-wrap">
+            <div class="img-shimmer" id="popup-shimmer"></div>
+            <img id="popup-img" src="" alt="" class="lazy-image" />
+            <div class="popup-particles" id="popup-particles" aria-hidden="true"></div>
+          </div>
+          <p id="popup-caption" class="popup-caption"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────
+         LOVE METER
+    ─────────────────────────────────── -->
+    <section id="section-lovemeter" class="story-section love-meter-section" role="region" aria-label="Love meter">
+      <div class="glass-container">
+        <div class="section-label" aria-hidden="true">Measured in heartbeats</div>
+        <h2 class="section-title">How Much I Love You</h2>
+        <div class="love-meter-wrap">
+          <div class="meter-heart-3d" id="meter-heart" aria-hidden="true">
+            <div class="heart-3d">❤</div>
+            <div class="heart-pulse-ring"></div>
+            <div class="heart-pulse-ring delay1"></div>
+            <div class="heart-pulse-ring delay2"></div>
+          </div>
+          <div class="meter-counter" role="meter" aria-label="Love percentage" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <span id="love-percent">0</span><span class="percent-sym" aria-hidden="true">%</span>
+          </div>
+          <div class="meter-label" id="meter-label" aria-live="polite">Loading love…</div>
+          <div class="meter-bar-wrap" role="progressbar" aria-label="Love progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="meter-bar" id="meter-bar"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────
+         SECTION 3 — TIMELINE JOURNEY
+    ─────────────────────────────────── -->
+    <section id="section-timeline" class="story-section timeline-section" role="region" aria-label="Our journey together">
+      <div class="section-label" aria-hidden="true">Chapter III</div>
+      <h2 class="section-title">Our Journey Together</h2>
+      <p class="section-subtitle">Every milestone is a memory. Every moment is a promise.</p>
+      <div class="timeline-islands" id="timeline-islands" role="list" aria-label="Timeline of our love story">
+        <!-- Islands injected by JS -->
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────
+         SECTION 4 — VIDEO MEMORIES
+    ─────────────────────────────────── -->
+    <section id="section-videos" class="story-section video-section" role="region" aria-label="Video memories">
+      <div class="section-label" aria-hidden="true">Chapter IV</div>
+      <h2 class="section-title">Moving Memories</h2>
+      <p class="section-subtitle">Moments in motion — forever playing in my heart</p>
+      <div class="video-gallery">
+
+        <div class="video-glass-frame float-in" style="--fi-delay:0s">
+          <div class="video-inner">
+            <video class="memory-video" src="src/video1.mp4" muted playsinline loop preload="none"
+                   aria-label="Our first adventure together">
+            </video>
+            <div class="video-overlay" aria-hidden="true">
+              <div class="video-play-icon">▶</div>
+            </div>
+            <div class="video-glow"       aria-hidden="true"></div>
+            <div class="video-reflection" aria-hidden="true"></div>
+          </div>
+          <p class="video-caption">One push-up, endless cute struggles 😂</p>
+        </div>
+
+        <div class="video-glass-frame float-in" style="--fi-delay:0.15s">
+          <div class="video-inner">
+            <video class="memory-video" src="src/video2.mp4" muted playsinline loop preload="none"
+                   aria-label="Laughing together">
+            </video>
+            <div class="video-overlay" aria-hidden="true">
+              <div class="video-play-icon">▶</div>
+            </div>
+            <div class="video-glow"       aria-hidden="true"></div>
+            <div class="video-reflection" aria-hidden="true"></div>
+          </div>
+          <p class="video-caption">Finger by finger, hand in hand, we held on like we never wanted to let go ❤️</p>
+        </div>
+
+        <div class="video-glass-frame float-in" style="--fi-delay:0.3s">
+          <div class="video-inner">
+            <video class="memory-video" src="src/video3.mp4" muted playsinline loop preload="none"
+                   aria-label="A moment treasured forever">
+            </video>
+            <div class="video-overlay" aria-hidden="true">
+              <div class="video-play-icon">▶</div>
+            </div>
+            <div class="video-glow"       aria-hidden="true"></div>
+            <div class="video-reflection" aria-hidden="true"></div>
+          </div>
+          <p class="video-caption">Sitting on the seashore, looking innocent and carefree, you were the cutest thing my eyes had ever seen ✨</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────
+         SECTION 5 — ADVENTURES
+    ─────────────────────────────────── -->
+    <section id="section-adventures" class="story-section adventures-section" role="region" aria-label="Our adventures">
+      <div class="floating-island-bg" aria-hidden="true"></div>
+      <div class="section-label" aria-hidden="true">Chapter V</div>
+      <h2 class="section-title">Our Adventures</h2>
+      <p class="section-subtitle">Life is better when we write the story together</p>
+      <div class="adventure-grid">
+
+        <article class="adventure-card glass-card float-in" style="--fi-delay:0s" tabindex="0">
+          <div class="adventure-img-wrap">
+            <div class="img-shimmer"></div>
+            <img src="src/photo6.jpeg" alt="Us with a little cat — simple, unforgettable" class="lazy-image" loading="lazy" />
+            <div class="adventure-img-glow" aria-hidden="true"></div>
+          </div>
+          <div class="card-body-text">
+            <h3>Us, a cat, memories</h3>
+            <p>Just us, a little cat, and a moment so simple that it became unforgettable.</p>
+          </div>
+        </article>
+
+        <article class="adventure-card glass-card float-in" style="--fi-delay:0.12s" tabindex="0">
+          <div class="adventure-img-wrap">
+            <div class="img-shimmer"></div>
+            <img src="src/photo7.jpeg" alt="Beach day — peaceful and perfect together" class="lazy-image" loading="lazy" />
+            <div class="adventure-img-glow" aria-hidden="true"></div>
+          </div>
+          <div class="card-body-text">
+            <h3>Beach, you, peace</h3>
+            <p>Sitting together by the beach, watching the waves and sharing the moment — everything felt peaceful and perfect with you beside me.</p>
+          </div>
+        </article>
+
+        <article class="adventure-card glass-card float-in" style="--fi-delay:0.24s" tabindex="0">
+          <div class="adventure-img-wrap">
+            <div class="img-shimmer"></div>
+            <img src="src/photo8.jpeg" alt="Resting on your shoulder — pure peace" class="lazy-image" loading="lazy" />
+            <div class="adventure-img-glow" aria-hidden="true"></div>
+          </div>
+          <div class="card-body-text">
+            <h3>A fine day 🌟</h3>
+            <p>Resting on your shoulder, I felt a kind of peace words could never explain. For that moment, all my worries quietly disappeared.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────
+         SECTION 6 — OUR PROMISES
+    ─────────────────────────────────── -->
+    <section id="section-promises" class="story-section promises-section" role="region" aria-label="Our promises">
+      <div class="section-label" aria-hidden="true">Chapter VI</div>
+      <h2 class="section-title glow-title">Our Promises</h2>
+      <p class="section-subtitle">Words I mean with every single heartbeat</p>
+      <div class="promises-grid" role="list">
+
+        <article class="promise-card glass-card float-in" role="listitem" tabindex="0" style="--fi-delay:0s">
+          <div class="promise-icon" aria-hidden="true">🌹</div>
+          <h3>I Promise to Choose You</h3>
+          <p>Every single day, in every possible way, I choose you — not because I have to, but because you are everything I could ever want.</p>
+        </article>
+
+        <article class="promise-card glass-card float-in" role="listitem" tabindex="0" style="--fi-delay:0.1s">
+          <div class="promise-icon" aria-hidden="true">🌙</div>
+          <h3>I Promise to Stay</h3>
+          <p>Through every storm, every silence, every broken night — I will stay, hold your hand, and remind you that we are enough.</p>
+        </article>
+
+        <article class="promise-card glass-card float-in" role="listitem" tabindex="0" style="--fi-delay:0.2s">
+          <div class="promise-icon" aria-hidden="true">✨</div>
+          <h3>I Promise to Grow</h3>
+          <p>To grow with you, for you, because of you. You make me want to be better, kinder, braver — every single day.</p>
+        </article>
+
+        <article class="promise-card glass-card float-in" role="listitem" tabindex="0" style="--fi-delay:0.3s">
+          <div class="promise-icon" aria-hidden="true">❤️</div>
+          <h3>I Promise Forever</h3>
+          <p>Not just today. Not just when it's easy. But always — in every universe, across every lifetime, in every heartbeat.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────
+         SECTION 7 — OUR FUTURE
+    ─────────────────────────────────── -->
+    <section id="section-future" class="story-section future-section" role="region" aria-label="Our future together">
+      <canvas id="galaxy-canvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="section-label" aria-hidden="true">Chapter VII</div>
+      <h2 class="section-title glow-title">Our Future</h2>
+      <p class="section-subtitle">A galaxy built just for the two of us</p>
+
+      <div class="future-grid" role="list">
+        <div class="future-planet float-in" style="--planet-color:#ff6eb4;--fi-delay:0s"    role="listitem" tabindex="0" aria-label="Our home">
+          <div class="planet-orb" aria-hidden="true">🏠</div>
+          <p>Our Home</p>
+        </div>
+        <div class="future-planet float-in" style="--planet-color:#b56eff;--fi-delay:0.1s"  role="listitem" tabindex="0" aria-label="Our family">
+          <div class="planet-orb" aria-hidden="true">👶</div>
+          <p>Our Family</p>
+        </div>
+        <div class="future-planet float-in" style="--planet-color:#ffd6e7;--fi-delay:0.2s"  role="listitem" tabindex="0" aria-label="Our travels">
+          <div class="planet-orb" aria-hidden="true">✈️</div>
+          <p>Our Travels</p>
+        </div>
+        <div class="future-planet float-in" style="--planet-color:#ff9de2;--fi-delay:0.3s"  role="listitem" tabindex="0" aria-label="Our nights">
+          <div class="planet-orb" aria-hidden="true">🌙</div>
+          <p>Our Nights</p>
+        </div>
+        <div class="future-planet float-in" style="--planet-color:#ffc0cb;--fi-delay:0.4s"  role="listitem" tabindex="0" aria-label="Our story">
+          <div class="planet-orb" aria-hidden="true">📖</div>
+          <p>Our Story</p>
+        </div>
+      </div>
+
+      <!-- Constellation heart SVG -->
+      <div class="constellation-heart float-in" style="--fi-delay:0.5s" aria-hidden="true">
+        <svg viewBox="0 0 400 300" class="star-svg" role="presentation">
+          <path d="M200,100 C200,60 160,40 130,60 C90,80 90,130 130,160 L200,220 L270,160 C310,130 310,80 270,60 C240,40 200,60 200,100Z"
+                fill="none" stroke="rgba(255,182,193,0.35)" stroke-width="1" stroke-dasharray="4 6"/>
+          <circle cx="200" cy="60"  r="3"   fill="#ffd6e7" class="star-dot"/>
+          <circle cx="130" cy="60"  r="2.5" fill="#ff9de2" class="star-dot"/>
+          <circle cx="270" cy="60"  r="2.5" fill="#ff9de2" class="star-dot"/>
+          <circle cx="90"  cy="110" r="2"   fill="#ffd6e7" class="star-dot"/>
+          <circle cx="310" cy="110" r="2"   fill="#ffd6e7" class="star-dot"/>
+          <circle cx="200" cy="220" r="4"   fill="#ff6eb4" class="star-dot pulse-star"/>
+          <circle cx="155" cy="190" r="2"   fill="#ffd6e7" class="star-dot"/>
+          <circle cx="245" cy="190" r="2"   fill="#ffd6e7" class="star-dot"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────
+         ENDING SCENE
+    ─────────────────────────────────── -->
+    <section id="section-ending" class="story-section ending-section" role="region" aria-label="The ending — forever">
+      <canvas id="ending-stars" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="ending-hearts-rain" id="ending-hearts" aria-hidden="true"></div>
+      <div class="ending-content">
+        <div class="ending-badge float-in" style="--fi-delay:0s" aria-hidden="true">∞</div>
+        <p class="ending-branding float-in" style="--fi-delay:0.1s">
+          <span class="ending-name">Siva</span>
+          <span class="ending-heart-emoji">❤️</span>
+          <span class="ending-name">Kavi</span>
+        </p>
+        <p class="ending-line-1 ending-text float-in" style="--fi-delay:0.2s">
+          "I would choose you in every universe."
+        </p>
+        <p class="ending-line-2 ending-text float-in" style="--fi-delay:0.5s">
+          I love you forever ❤️
+        </p>
+        <div class="ending-signature float-in" style="--fi-delay:0.8s">— Always yours</div>
+        <button class="enter-btn magnetic-btn replay-btn float-in" id="replay-btn"
+                style="--fi-delay:1.1s" aria-label="Replay our memories from the beginning">
+          <span class="btn-shimmer" aria-hidden="true"></span>
+          <span class="btn-glow"    aria-hidden="true"></span>
+          <span class="btn-text">Replay Memories 🔁</span>
+        </button>
+      </div>
+    </section>
+
+  </div><!-- /main-world -->
+
+  <!-- Three.js r128 — loaded synchronously before script.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP + ScrollTrigger — synchronous -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
